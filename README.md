@@ -4,7 +4,7 @@
 
 ## Mock API
 
-[https://stoplight.io/p/mocks/13955/154091//v1/users/{userId}/use-ticket](https://stoplight.io/p/mocks/13955/154091/
+[https://stoplight.io/p/mocks/13955/154091/](https://stoplight.io/p/mocks/13955/154091/)
 
 ```
 example
