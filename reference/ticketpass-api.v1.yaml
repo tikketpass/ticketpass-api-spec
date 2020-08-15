@@ -6,7 +6,7 @@ info:
 servers:
   - url: 'http://not.ready.yet/'
 paths:
-  v1/auth/sign-up:
+  /v1/auth/sign-up:
     post:
       summary: 회원가입
       operationId: post-v1-auth-sign-up
@@ -60,7 +60,7 @@ paths:
         - auth
       description: 회원가입 api
     parameters: []
-  v1/auth/sign-in:
+  /v1/auth/sign-in:
     parameters: []
     post:
       summary: 로그인
@@ -114,7 +114,7 @@ paths:
         description: ''
       tags:
         - auth
-  v1/auth/refresh-token:
+  /v1/auth/refresh-token:
     post:
       summary: 토큰 재발급
       operationId: post-v1-auth-refresh-token
@@ -182,7 +182,7 @@ paths:
           description: access token
           required: true
     parameters: []
-  v1/concerts:
+  /v1/concerts:
     post:
       summary: 새로운 공연 등록
       operationId: post-v1-concerts
@@ -354,7 +354,7 @@ paths:
         in: path
         required: true
         description: 공연 PK
-  'v1/users/{userId}/tickets':
+  '/v1/users/{userId}/tickets':
     parameters:
       - schema:
           type: string
