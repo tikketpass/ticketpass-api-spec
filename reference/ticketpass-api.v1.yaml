@@ -44,6 +44,40 @@ paths:
                       id: 1
                       name: 홍길동
                       'email:': gildong@email.com
+        '403':
+          description: |-
+            Forbidden
+            메일 인증이 안된 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+              examples:
+                example-1:
+                  value:
+                    message: email not verifeid yet
+        '404':
+          description: |-
+            Not Found
+            메일 인증 요청을 보내지 않은 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+              examples:
+                example-1:
+                  value:
+                    message: email verification request not sent
       requestBody:
         content:
           application/json:
@@ -58,7 +92,10 @@ paths:
         description: ''
       tags:
         - auth
-      description: 회원가입 api
+      description: |-
+        회원가입 api
+
+        반드시 메일 인증을 해야 회원가입이 가능합니다.
     parameters: []
   /v1/auth/sign-in:
     parameters: []
@@ -196,6 +233,8 @@ paths:
                 properties:
                   concert:
                     $ref: '#/components/schemas/ConcertInfo'
+                required:
+                  - concert
               examples:
                 concert1:
                   value:
@@ -270,6 +309,66 @@ paths:
 
         새로운 공연 등록할 때 사용함
     parameters: []
+    put:
+      summary: 공연 정보 수정 api
+      operationId: put-v1-concerts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  concert:
+                    $ref: '#/components/schemas/ConcertInfo'
+        '401':
+          description: |-
+            Unauthorized
+
+            Authorization 헤더에 access token이 없거나 잘못된 값을 전달했을 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+              examples:
+                invalid jwt token:
+                  value:
+                    message: Invalid jwt token
+        '403':
+          description: |-
+            Forbidden
+
+            공연을 주최한 호스트가 아님에도 수정을 시도하는 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+              examples:
+                no permission:
+                  value:
+                    message: user is not hosting concert
+      description: |-
+        공연 정보 수정 api
+
+        새로운 공연 등록할 때 사용함
+      tags:
+        - concert
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewConcertForm'
   '/v1/concerts/{concertId}/sync-tickets':
     post:
       summary: 공연 티켓 동기화
@@ -558,6 +657,23 @@ paths:
                           email: gildong@email.com
                       seatClass: R
                       isUsed: true
+        '409':
+          description: |-
+            Conflict
+            이미 입장 처리된 티켓을 사용할 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+              examples:
+                example-1:
+                  value:
+                    message: ticket is already used
       description: "QR 코드 암호화된 데이터를 POST body로 전송하면 \n서버에서 디코딩한 후 해당 티켓을 사용처리함"
       tags:
         - ticket
@@ -574,6 +690,48 @@ paths:
                 - qrData
         description: |
           QR 코드에 있는 정보들을 POST 바디로 보냄
+  /v1/auth/send-email-code:
+    post:
+      summary: 메일 인증코드 발송
+      operationId: post-v1-auth-send-email-code
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        '429':
+          description: |-
+            Too Many Requests
+            1분 안에 중복된 요청을 보냈을 경우 입니다.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example-1:
+                  value:
+                    message: code has been sent
+      description: |-
+        메일 인증 코드 발송하는 api
+
+        메일 인증 코드 발송한 다음에 회원가입을 할 수 있습니다.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: 인증코드 보낼 이메일
+      tags:
+        - auth
+    parameters: []
 components:
   schemas:
     User:
@@ -706,19 +864,29 @@ components:
     NewConcertForm:
       title: NewConcertForm
       type: object
+      x-tags:
+        - z-form
       properties:
         name:
           type: string
           description: 공연 이름
-        beginAt:
+        startTime:
           type: string
           description: 공연 시작시간
           format: date-time
+        endTime:
+          type: string
+          format: time
+          description: 공연 끝나는 시간
+        startDate:
+          type: string
+          format: date
+          description: 공연 시작 날짜
       required:
         - name
-        - beginAt
-      x-tags:
-        - z-form
+        - startTime
+        - endTime
+        - startDate
     ConcertInfo:
       title: ConcertInfo
       type: object
