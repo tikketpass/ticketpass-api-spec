@@ -473,12 +473,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  due:
+                  unexpiredTickets:
                     type: array
                     description: "앞으로 공연 예정인 공연 티켓들\n\n달 기준으로 오름차순으로 정렬하고 \n제일 첫번째 티켓이 다음 공연 티켓\n\nex.\n8월\n9월\n10월\n..."
                     items:
                       $ref: '#/components/schemas/TicketInfo'
-                  overdue:
+                  expiredTickets:
                     type: array
                     description: |-
                       이미 공연한 공연 티켓들
@@ -492,9 +492,13 @@ paths:
                       ...
                     items:
                       $ref: '#/components/schemas/TicketInfo'
+                  nextTicket:
+                    type: string
+                    description: 가까운 시일에 열릴 콘서트
                 required:
-                  - due
-                  - overdue
+                  - unexpiredTickets
+                  - expiredTickets
+                  - nextTicket
               examples:
                 'dueSize=3, overDueSize=3':
                   value:
@@ -615,12 +619,12 @@ paths:
         - schema:
             type: integer
           in: query
-          name: dueSize
+          name: expiredSize
           description: 앞으로 공연 예정인 공연 티켓 개수
         - schema:
             type: integer
           in: query
-          name: overDueSize
+          name: unexpiredSize
           description: 이미 공연한 공연티켓 개수
   '/v1/users/{userId}/use-ticket':
     parameters:
@@ -685,7 +689,7 @@ paths:
               properties:
                 qrData:
                   type: string
-                  description: QR 코드 데이터 (암호화 된 것)
+                  description: "QR 코드 데이터 (암호화 된 것)\n\n아래 값을 AES256으로 암호화함\n사용자 ID + 공백 + 티켓 ID "
               required:
                 - qrData
         description: |
@@ -802,6 +806,8 @@ components:
       title: SignUpForm
       type: object
       x-examples: {}
+      x-tags:
+        - z-form
       properties:
         email:
           type: string
@@ -809,7 +815,12 @@ components:
           format: email
         password:
           type: string
-          description: 사용자 비밀번호
+          description: |-
+            비밀번호
+
+            sha256으로 암호화합니다 (64자리)
+          minLength: 64
+          maxLength: 64
         name:
           type: string
           description: 사용자 이름
@@ -817,8 +828,6 @@ components:
         - email
         - password
         - name
-      x-tags:
-        - z-form
     UserInfo:
       title: UserInfo
       type: object
@@ -837,6 +846,10 @@ components:
     SignInForm:
       title: SignInForm
       type: object
+      x-examples: {}
+      x-tags:
+        - z-form
+      description: ''
       properties:
         email:
           type: string
@@ -844,7 +857,12 @@ components:
           description: 이메일
         password:
           type: string
-          description: 비밀번호
+          description: |-
+            비밀번호
+
+            sha256으로 암호화합니다 (64자리)
+          minLength: 64
+          maxLength: 64
         role:
           type: string
           description: |-
@@ -858,9 +876,6 @@ components:
         - email
         - password
         - role
-      x-examples: {}
-      x-tags:
-        - z-form
     NewConcertForm:
       title: NewConcertForm
       type: object
