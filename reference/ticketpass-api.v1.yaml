@@ -309,8 +309,9 @@ paths:
 
         새로운 공연 등록할 때 사용함
     parameters: []
+  '/v1/concerts/{concertId}':
     put:
-      summary: 공연 정보 수정 api
+      summary: 공연 정보 수정
       operationId: put-v1-concerts
       responses:
         '200':
@@ -366,9 +367,48 @@ paths:
         - concert
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/NewConcertForm'
+              type: object
+              properties:
+                topImage:
+                  type: string
+                  format: binary
+                  description: 상단 이미지
+                bottomImage:
+                  type: string
+                  format: binary
+                  description: 하단 이미지
+                name:
+                  type: string
+                  description: 공연 이름
+                startTime:
+                  type: string
+                  description: 공연 시작시간
+                  format: time
+                endTime:
+                  type: string
+                  description: 공연 끝나는 시간
+                  format: time
+                startDate:
+                  type: string
+                  description: 공연 시작 날짜
+                  format: date
+              required:
+                - topImage
+                - bottomImage
+                - name
+                - startTime
+                - endTime
+                - startDate
+        description: multiplart/form-data
+    parameters:
+      - schema:
+          type: integer
+        name: concertId
+        in: path
+        required: true
+        description: 공연 PK
   '/v1/concerts/{concertId}/sync-tickets':
     post:
       summary: 공연 티켓 동기화
@@ -607,7 +647,7 @@ paths:
                   value:
                     message: User is not concert host
       operationId: get-v1-users-userId-tickets
-      description: "due와 overdue를 응답으로 줌\n\n0.query parameter\n\n  * dueSize\n    due 티켓 개수\n  * overDue\n    overdue 티켓 개수\n    \n1.due \n\n  앞으로 공연 예정인 공연 티켓들\n\n  달 기준으로 오름차순으로 정렬하고 \n  제일 첫번째 티켓이 다음 공연 티켓\n\n  ex.\n  8월\n  9월\n  10월\n  ...\n  \n2.overdue\n\n  이미 공연한 공연 티켓들\n\n  달 기준으로 내림차순으로 정렬함\n  \n  ex.\n  7월\n  6월\n  5월\n  ..."
+      description: "due와 overdue를 응답으로 줌\n\n0.query parameter\n\n  * expiredSize\n    expiredTickets 개수\n  * unexpiredSize\n    unexpiredTicktes 개수\n    \n1.unexpiredTickets\n\n  앞으로 공연 예정인 공연 티켓들\n\n  달 기준으로 오름차순으로 정렬하고 \n  제일 첫번째 티켓이 다음 공연 티켓\n\n  ex.\n  8월\n  9월\n  10월\n  ...\n  \n2.expiredTickets\n\n  이미 공연한 공연 티켓들\n\n  달 기준으로 내림차순으로 정렬함\n  \n  ex.\n  7월\n  6월\n  5월\n  ...\n  \n3. nextTicket\n   \n  가장 빨리 열릴 공연 티켓"
       parameters:
         - schema:
             type: string
@@ -736,6 +776,81 @@ paths:
       tags:
         - auth
     parameters: []
+  '/v1/users/{userId}/concerts':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: 내가 호스팅한 공연 목록 조회
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  concerts:
+                    type: array
+                    description: 내가 주최하는 공연 목록
+                    items:
+                      $ref: '#/components/schemas/ConcertInfo'
+                required:
+                  - concerts
+        '401':
+          description: |-
+            Unauthorized
+            access token에 문제가 있을 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+        '403':
+          description: |-
+            Forbidden
+            role이 참가자인 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+              examples:
+                example-1:
+                  value:
+                    message: user role is not HOST
+      operationId: get-v1-users-userId-concerts
+      description: ''
+      parameters:
+        - schema:
+            type: string
+            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e...
+          in: header
+          name: Authorization
+          required: true
+          description: access token
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: limit
+        - schema:
+            type: integer
+          in: query
+          name: offset
+          description: offset
 components:
   schemas:
     User:
@@ -905,13 +1020,23 @@ components:
     ConcertInfo:
       title: ConcertInfo
       type: object
+      x-tags:
+        - z-dto
       properties:
         name:
           type: string
           description: 공연 이름
-        beginAt:
+        startTime:
           type: string
           description: 공연 시작시간
+          format: time
+        endTime:
+          type: string
+          format: time
+          description: 공연 끝나는 시간
+        startDate:
+          type: string
+          description: 공연 시작일
         spreadsheetLink:
           type: string
           description: 스프레드시트 링크
@@ -919,11 +1044,11 @@ components:
           $ref: '#/components/schemas/UserInfo'
       required:
         - name
-        - beginAt
+        - startTime
+        - endTime
+        - startDate
         - spreadsheetLink
         - host
-      x-tags:
-        - z-dto
     TicketInfo:
       title: TicketInfo
       type: object
