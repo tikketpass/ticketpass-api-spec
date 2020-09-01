@@ -755,6 +755,8 @@ components:
     Concert:
       title: Concert
       type: object
+      x-tags:
+        - z-entity
       properties:
         id:
           type: integer
@@ -762,18 +764,24 @@ components:
         name:
           type: string
           description: 이름
-        beginAt:
+        startTime:
           type: string
-          format: date-time
+          format: time
           description: 시작일 및 시간
+        endTime:
+          type: string
+          description: 공연 끝나는 시간
+          format: time
+        startDate:
+          type: string
+          description: 공연 시작일
+          format: date
         hostId:
           type: integer
           description: 주최자 PK
         spreadsheetLink:
           type: string
           description: 스프레드시트 링크
-      x-tags:
-        - z-entity
     Ticket:
       title: Ticket
       type: object
@@ -890,25 +898,37 @@ components:
     ConcertInfo:
       title: ConcertInfo
       type: object
+      x-tags:
+        - z-dto
       properties:
         name:
           type: string
           description: 공연 이름
-        beginAt:
+        startTime:
           type: string
           description: 공연 시작시간
+          format: time
+        endTime:
+          type: string
+          format: time
+          description: 공연 끝나는 시간
+        startDate:
+          type: string
+          format: date
+          description: 공연 시작일
         spreadsheetLink:
           type: string
           description: 스프레드시트 링크
+          format: uri
         host:
           $ref: '#/components/schemas/UserInfo'
       required:
         - name
-        - beginAt
+        - startTime
+        - endTime
+        - startDate
         - spreadsheetLink
         - host
-      x-tags:
-        - z-dto
     TicketInfo:
       title: TicketInfo
       type: object
