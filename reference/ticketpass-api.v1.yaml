@@ -4,7 +4,7 @@ info:
   version: '1.0'
   description: ''
 servers:
-  - url: 'http://not.ready.yet/'
+  - url: 'http://ticketpass.puroong.me'
 paths:
   /v1/auth/sign-up:
     post:
@@ -80,11 +80,11 @@ paths:
             schema:
               $ref: '#/components/schemas/SignUpForm'
             examples:
-              gildong:
+              example-1:
                 value:
                   email: gildong@email.com
                   password: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
-                  name: 홍길동
+                  code: y6v2xvjb9nnomlakb2kdfc
         description: ''
       tags:
         - auth
@@ -333,6 +333,23 @@ paths:
         in: path
         required: true
         description: 공연 PK
+    get:
+      summary: 공연 정보 불러오기
+      operationId: get-v1-concerts-concertId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  concert:
+                    $ref: '#/components/schemas/ConcertInfo'
+                required:
+                  - concert
+      tags:
+        - concert
   '/v1/concerts/{concertId}/sync-tickets':
     post:
       summary: 공연 티켓 동기화
@@ -457,8 +474,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/TicketInfo'
                   nextTicket:
-                    type: string
-                    description: 가까운 시일에 열릴 콘서트
+                    $ref: '#/components/schemas/TicketInfo'
                 required:
                   - unexpiredTickets
                   - expiredTickets
@@ -653,7 +669,7 @@ paths:
               properties:
                 qrData:
                   type: string
-                  description: "QR 코드 데이터 (암호화 된 것)\n\n아래 값을 AES256으로 암호화함\n사용자 ID + 공백 + 티켓 ID "
+                  description: "QR 코드 데이터 (암호화 된 것)\n\n아래 값을 AES256으로 암호화함\n사용자 ID + 공백 + 티켓 ID \n\nsecret key는 kik2fkas9ls1t7vrv72mb로 사용함"
               required:
                 - qrData
         description: |
@@ -953,6 +969,9 @@ components:
       x-tags:
         - z-dto
       properties:
+        id:
+          type: integer
+          description: 공연 PK
         name:
           type: string
           description: 공연 이름
@@ -972,6 +991,14 @@ components:
           type: string
           description: 스프레드시트 링크
           format: uri
+        topImageLink:
+          type: string
+          description: 상단 이미지 주소
+          format: uri
+        bottomImageLink:
+          type: string
+          description: 하단 이미지 주소
+          format: uri
         host:
           $ref: '#/components/schemas/UserInfo'
       required:
@@ -980,7 +1007,10 @@ components:
         - endTime
         - startDate
         - spreadsheetLink
+        - topImageLink
+        - bottomImageLink
         - host
+        - id
     TicketInfo:
       title: TicketInfo
       type: object
