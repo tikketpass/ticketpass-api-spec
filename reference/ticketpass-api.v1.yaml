@@ -34,7 +34,6 @@ paths:
                 gildong:
                   value:
                     accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJQQVJUSUNJUEFOVCIsImV4cCI6MTYwNjA5NzE0MDU0Nn0.t9E6KvykkkIvlivwlyQjG9E7kTu81GMfI-mKohvj5Ro
-                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJQQVJUSUNJUEFOVCIsImV4cCI6MTY4Mzg1NzE1OTc3M30.SWT55JmoheoYhgWSjV3LYMCxbVG22t52ODvQAJKZBD0
                     tokenType: Bearer
                     user:
                       id: 5f4fe3dba2d2227ae30477ad
@@ -121,7 +120,6 @@ paths:
                 gildong:
                   value:
                     accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJQQVJUSUNJUEFOVCIsImV4cCI6MTYwNjA5NzE0MDU0Nn0.t9E6KvykkkIvlivwlyQjG9E7kTu81GMfI-mKohvj5Ro
-                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJQQVJUSUNJUEFOVCIsImV4cCI6MTY4Mzg1NzE1OTc3M30.SWT55JmoheoYhgWSjV3LYMCxbVG22t52ODvQAJKZBD0
                     tokenType: Bearer
                     user:
                       id: 5f4fe3dba2d2227ae30477ad
@@ -526,7 +524,7 @@ paths:
                   - expiredTickets
                   - nextTicket
               examples:
-                'dueSize=3, overDueSize=3':
+                'unexpiredSize=3, expiredSize=3':
                   value:
                     unexpiredTickets:
                       - id: fdsfsdffdsdfsd
@@ -541,6 +539,8 @@ paths:
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
                             email: gildong@email.com
+                        userName: 홍길동
+                        userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: false
                       - id: dfsfdsfsdfdsdfs
@@ -555,6 +555,8 @@ paths:
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
                             email: gildong@email.com
+                        userName: 홍길동
+                        userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: false
                       - id: cxvxcvxcvxvc
@@ -569,6 +571,8 @@ paths:
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
                             email: gildong@email.com
+                        userName: 홍길동
+                        userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: false
                     expiredTickets:
@@ -584,6 +588,8 @@ paths:
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
                             email: gildong@email.com
+                        userName: 홍길동
+                        userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: true
                       - id: uiouiouioio
@@ -598,6 +604,8 @@ paths:
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
                             email: gildong@email.com
+                        userName: 홍길동
+                        userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: true
                       - id: fduifduidf
@@ -612,6 +620,8 @@ paths:
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
                             email: gildong@email.com
+                        userName: 홍길동
+                        userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: true
                     nextTicket:
@@ -627,6 +637,10 @@ paths:
                         host:
                           id: 5f4fe3dba2d2227ae30477ad
                           email: gildong@email.com
+                      userName: 홍길동
+                      userPhoneNumber: 010-3479-1031
+                      seatClass: R
+                      isUsed: true
         '401':
           description: |-
             Unauthorized
@@ -719,6 +733,10 @@ paths:
                         host:
                           id: 5f4fe3dba2d2227ae30477ad
                           email: gildong@email.com
+                      userName: 홍길동
+                      userPhoneNumber: 010-3479-1031
+                      seatClass: S
+                      isUsed: true
         '409':
           description: |-
             Conflict
@@ -919,8 +937,8 @@ components:
         - z-entity
       properties:
         id:
-          type: integer
           description: PK
+          type: string
         name:
           type: string
           description: 이름
@@ -995,18 +1013,18 @@ components:
     UserInfo:
       title: UserInfo
       type: object
+      x-tags:
+        - z-dto
       properties:
         id:
-          type: integer
           description: PK
+          type: string
         name:
           type: string
           description: 이름
         email:
           type: string
           description: 이메일
-      x-tags:
-        - z-dto
     SignInForm:
       title: SignInForm
       type: object
@@ -1073,7 +1091,7 @@ components:
         - z-dto
       properties:
         id:
-          type: integer
+          type: string
           description: 공연 PK
         name:
           type: string
@@ -1105,6 +1123,7 @@ components:
         host:
           $ref: '#/components/schemas/UserInfo'
       required:
+        - id
         - name
         - startTime
         - endTime
@@ -1113,24 +1132,33 @@ components:
         - topImageLink
         - bottomImageLink
         - host
-        - id
     TicketInfo:
       title: TicketInfo
       type: object
+      x-tags:
+        - z-dto
       properties:
         id:
-          type: integer
+          type: string
         concert:
           $ref: '#/components/schemas/ConcertInfo'
         seatClass:
           type: string
+          description: 좌석 등급
         isUsed:
           type: boolean
+          description: 티켓 사용 여부
+        userName:
+          type: string
+          description: 참가자 이름
+        userPhoneNumber:
+          type: string
+          description: 참가자 연락처
       required:
         - id
         - concert
         - seatClass
         - isUsed
-      x-tags:
-        - z-dto
+        - userName
+        - userPhoneNumber
   securitySchemes: {}
