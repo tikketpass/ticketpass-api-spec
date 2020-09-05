@@ -37,7 +37,7 @@ paths:
                     tokenType: Bearer
                     user:
                       id: 5f4fe3dba2d2227ae30477ad
-                      'email:': gildong@email.com
+                      'email:': skfk0135@gmail.com
         '403':
           description: |-
             Forbidden
@@ -80,7 +80,7 @@ paths:
             examples:
               example-1:
                 value:
-                  email: gildong@email.com
+                  email: skfk0135@gmail.com
                   password: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
                   code: y6v2xvjb9nnomlakb2kdfc
         description: ''
@@ -123,7 +123,7 @@ paths:
                     tokenType: Bearer
                     user:
                       id: 5f4fe3dba2d2227ae30477ad
-                      'email:': gildong@email.com
+                      'email:': skfk0135@gmail.com
       description: "로그인 api\n\njwt 토큰에(access token) 유저 권한을 저장하여 로그인 할 때 \n\n참가자(PARTICIPANT)와 주최자(HOST) 중 선택을 할 수 있도록 함"
       requestBody:
         content:
@@ -131,11 +131,11 @@ paths:
             schema:
               $ref: '#/components/schemas/SignInForm'
             examples:
-              gildong:
+              skfk0135:
                 value:
-                  email: gildong@email.com
+                  email: skfk0135@gmail.com
                   password: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
-                  role: PARTICIPANT
+                  role: HOST
         description: ''
       tags:
         - auth
@@ -168,7 +168,7 @@ paths:
                       bottomImageLink: null
                       host:
                         id: 5f4fe3dba2d2227ae30477ad
-                        email: gildong@email.com
+                        email: skfk0135@ㅎmail.com
         '401':
           description: |-
             Unauthorized
@@ -261,7 +261,7 @@ paths:
                       bottomImageLink: null
                       host:
                         id: 5f4fe3dba2d2227ae30477ad
-                        email: gildong@email.com
+                        email: skfk0135@gmail.com
         '401':
           description: |-
             Unauthorized
@@ -351,7 +351,7 @@ paths:
           required: true
     parameters:
       - schema:
-          type: integer
+          type: string
         name: concertId
         in: path
         required: true
@@ -384,7 +384,7 @@ paths:
                       bottomImageLink: null
                       host:
                         id: 5f4fe3dba2d2227ae30477ad
-                        email: gildong@email.com
+                        email: skfk0135@gmail.com
       tags:
         - concert
       parameters:
@@ -538,8 +538,8 @@ paths:
                           bottomImageLink: null
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
-                            email: gildong@email.com
-                        userName: 홍길동
+                            email: skfk0135@gmail.com
+                        userName: 오범수
                         userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: false
@@ -554,8 +554,8 @@ paths:
                           bottomImageLink: null
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
-                            email: gildong@email.com
-                        userName: 홍길동
+                            email: skfk0135@gmail.com
+                        userName: 오범수
                         userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: false
@@ -570,8 +570,8 @@ paths:
                           bottomImageLink: null
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
-                            email: gildong@email.com
-                        userName: 홍길동
+                            email: skfk0135@gmail.com
+                        userName: 오범수
                         userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: false
@@ -587,8 +587,8 @@ paths:
                           bottomImageLink: null
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
-                            email: gildong@email.com
-                        userName: 홍길동
+                            email: skfk0135@gmail.com
+                        userName: 오범수
                         userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: true
@@ -603,8 +603,8 @@ paths:
                           bottomImageLink: null
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
-                            email: gildong@email.com
-                        userName: 홍길동
+                            email: skfk0135@gmail.com
+                        userName: 오범수
                         userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: true
@@ -619,8 +619,8 @@ paths:
                           bottomImageLink: null
                           host:
                             id: 5f4fe3dba2d2227ae30477ad
-                            email: gildong@email.com
-                        userName: 홍길동
+                            email: skfk0135@gmail.com
+                        userName: 오범수
                         userPhoneNumber: 010-3479-1031
                         seatClass: R
                         isUsed: true
@@ -636,8 +636,8 @@ paths:
                         bottomImageLink: null
                         host:
                           id: 5f4fe3dba2d2227ae30477ad
-                          email: gildong@email.com
-                      userName: 홍길동
+                          email: skfk0135@gmail.com
+                      userName: 오범수
                       userPhoneNumber: 010-3479-1031
                       seatClass: R
                       isUsed: true
@@ -678,7 +678,7 @@ paths:
                   value:
                     message: User is not concert host
       operationId: get-v1-users-userId-tickets
-      description: "due와 overdue를 응답으로 줌\n\n0.query parameter\n\n  * expiredSize\n    expiredTickets 개수\n  * unexpiredSize\n    unexpiredTicktes 개수\n    \n1.unexpiredTickets\n\n  앞으로 공연 예정인 공연 티켓들\n\n  달 기준으로 오름차순으로 정렬하고 \n  제일 첫번째 티켓이 다음 공연 티켓\n\n  ex.\n  8월\n  9월\n  10월\n  ...\n  \n2.expiredTickets\n\n  이미 공연한 공연 티켓들\n\n  달 기준으로 내림차순으로 정렬함\n  \n  ex.\n  7월\n  6월\n  5월\n  ...\n  \n3. nextTicket\n   \n  가장 빨리 열릴 공연 티켓"
+      description: "nextTicket, expiredTickets와 unexpiredTickets를 응답으로 줌\n\n0.query parameter\n\n  * expiredSize\n    expiredTickets 개수\n  * unexpiredSize\n    unexpiredTicktes 개수\n    \n1.unexpiredTickets\n\n  앞으로 공연 예정인 공연 티켓들\n\n  달 기준으로 오름차순으로 정렬하고 \n  제일 첫번째 티켓이 다음 공연 티켓\n\n  ex.\n  8월\n  9월\n  10월\n  ...\n  \n2.expiredTickets\n\n  이미 공연한 공연 티켓들\n\n  달 기준으로 내림차순으로 정렬함\n  \n  ex.\n  7월\n  6월\n  5월\n  ...\n  \n3. nextTicket\n   \n  가장 빨리 열릴 공연 티켓"
       parameters:
         - schema:
             type: string
@@ -732,8 +732,8 @@ paths:
                         bottomImageLink: null
                         host:
                           id: 5f4fe3dba2d2227ae30477ad
-                          email: gildong@email.com
-                      userName: 홍길동
+                          email: skfk0135@gmail.com
+                      userName: 오범수
                       userPhoneNumber: 010-3479-1031
                       seatClass: S
                       isUsed: true
@@ -862,7 +862,7 @@ paths:
                         bottomImageLink: null
                         host:
                           id: 5f4fe3dba2d2227ae30477ad
-                          email: gildong@email.com
+                          email: skfk0135@gmail.com
         '401':
           description: |-
             Unauthorized
@@ -1019,9 +1019,6 @@ components:
         id:
           description: PK
           type: string
-        name:
-          type: string
-          description: 이름
         email:
           type: string
           description: 이메일
@@ -1161,4 +1158,5 @@ components:
         - isUsed
         - userName
         - userPhoneNumber
+      description: ''
   securitySchemes: {}
