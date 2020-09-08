@@ -90,6 +90,8 @@ paths:
         회원가입 api
 
         반드시 메일 인증을 해야 회원가입이 가능합니다.
+
+        비밀번호는 sha256 암호화합니다
     parameters: []
   /v1/auth/sign-in:
     parameters: []
@@ -160,15 +162,16 @@ paths:
                   value:
                     concert:
                       name: concert1
-                      startTime: '08:00:00'
-                      endTime: '10:00:00'
-                      startDate: '2020-09-02'
+                      startTime: '2020-09-02 10:00'
+                      enterTime: '2020-09-02 09:00'
+                      place: place
+                      spreadsheetId: dfsjflsdjfkljfklsdf
                       spreadsheetLink: 'https://spreadsheet.link'
                       topImageLink: null
                       bottomImageLink: null
                       host:
                         id: 5f4fe3dba2d2227ae30477ad
-                        email: skfk0135@ㅎmail.com
+                        email: skfk0135@gmail.com
         '401':
           description: |-
             Unauthorized
@@ -215,9 +218,9 @@ paths:
               concert1:
                 value:
                   name: 공연1
-                  startTime: '08:00:00'
-                  endTime: '10:00:00'
-                  startDate: '2020-09-02'
+                  startTime: '2020-09-02 10:00'
+                  enterTime: '2020-09-02 09:00'
+                  place: place
         description: ''
       parameters: []
       tags:
@@ -251,9 +254,10 @@ paths:
                   value:
                     concert:
                       name: concert1
-                      startTime: '08:00:00'
-                      endTime: '10:00:00'
-                      startDate: '2020-09-02'
+                      startTime: '2020-09-02 10:00'
+                      enterTime: '2020-09-02 09:00'
+                      place: place
+                      spreadsheetId: fdsfjlsdfjkdslf
                       spreadsheetLink: 'https://spreadsheet.link'
                       topImageLink: null
                       bottomImageLink: null
@@ -322,22 +326,21 @@ paths:
                 startTime:
                   type: string
                   description: 공연 시작시간
-                  format: time
-                endTime:
+                  format: date-time
+                enterTIme:
                   type: string
-                  description: 공연 끝나는 시간
-                  format: time
-                startDate:
+                  description: 공연 입장 시간
+                  format: date-time
+                place:
                   type: string
-                  description: 공연 시작 날짜
-                  format: date
+                  description: 공연 장소
               required:
                 - topImage
                 - bottomImage
                 - name
                 - startTime
-                - endTime
-                - startDate
+                - enterTIme
+                - place
             examples: {}
         description: multiplart/form-data
       parameters: []
@@ -370,9 +373,10 @@ paths:
                   value:
                     concert:
                       name: concert1
-                      startTime: '08:00:00'
-                      endTime: '10:00:00'
-                      startDate: '2020-09-02'
+                      startTime: '2020-09-02 10:00'
+                      enterTime: '2020-09-02 09:00'
+                      place: place
+                      spreadsheetId: fdlsjfksdfdfdf
                       spreadsheetLink: 'https://spreadsheet.link'
                       topImageLink: null
                       bottomImageLink: null
@@ -393,8 +397,15 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {}
-              examples: {}
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example-1:
+                  value:
+                    message: Sync successs
         '401':
           description: |-
             Unauthorized
@@ -515,9 +526,10 @@ paths:
                       - id: fdsfsdffdsdfsd
                         concert:
                           name: concert1
-                          startDate: '2020-08-15'
-                          startTime: '08:00:00'
-                          endTime: '10:00:00'
+                          startTime: '2020-08-15 10:00'
+                          enterTime: '2020-08-15 09:00'
+                          place: place
+                          spreadsheetId: fdjsklfjdksfld
                           spreadsheetLink: 'https://spreadsheet.link'
                           topImageLink: null
                           bottomImageLink: null
@@ -531,9 +543,10 @@ paths:
                       - id: dfsfdsfsdfdsdfs
                         concert:
                           name: concert2
-                          startDate: '2020-09-15'
-                          startTime: '08:00:00'
-                          endTime: '10:00:00'
+                          startTime: '2020-09-15 08:00'
+                          endTime: '2020-09-15 10:00'
+                          place: place
+                          spreadsheetId: fdjsklfjdksfld
                           spreadsheetLink: 'https://spreadsheet.link'
                           topImageLink: null
                           bottomImageLink: null
@@ -547,9 +560,10 @@ paths:
                       - id: cxvxcvxcvxvc
                         concert:
                           name: concert3
-                          startDate: '2020-10-15'
-                          startTime: '08:00:00'
-                          endTime: '10:00:00'
+                          startTime: '2020-10-15 08:00'
+                          enterTime: '2020-10-15 10:00'
+                          place: place
+                          spreadsheetId: fdjsklfjdksfld
                           spreadsheetLink: 'https://spreadsheet.link'
                           topImageLink: null
                           bottomImageLink: null
@@ -564,9 +578,10 @@ paths:
                       - id: ewqewqeqwewqew
                         concert:
                           name: concert3
-                          startDate: '2020-07-15'
-                          startTime: '08:00:00'
-                          endTime: '10:00:00'
+                          startTime: '2020-07-15 08:00'
+                          enterTime: '2020-07-15 10:00'
+                          place: place
+                          spreadsheetId: fdjsklfjdksfld
                           spreadsheetLink: 'https://spreadsheet.link'
                           topImageLink: null
                           bottomImageLink: null
@@ -580,9 +595,10 @@ paths:
                       - id: uiouiouioio
                         concert:
                           name: concert2
-                          startDate: '2020-06-15'
-                          startTime: '08:00:00'
-                          endTime: '10:00:00'
+                          startTime: '2020-06-15 08:00'
+                          enterTime: '2020-06-15 10:00'
+                          place: place
+                          spreadsheetId: fdjsklfjdksfld
                           spreadsheetLink: 'https://spreadsheet.link'
                           topImageLink: null
                           bottomImageLink: null
@@ -596,9 +612,10 @@ paths:
                       - id: fduifduidf
                         concert:
                           name: concert1
-                          startDate: '2020-05-15'
-                          startTime: '08:00:00'
-                          endTime: '10:00:00'
+                          startTime: '2020-05-15 08:00'
+                          enterTime: '2020-05-15 10:00'
+                          place: place
+                          spreadsheetId: fdjsklfjdksfld
                           spreadsheetLink: 'https://spreadsheet.link'
                           topImageLink: null
                           bottomImageLink: null
@@ -613,9 +630,10 @@ paths:
                       id: 43dsfafdasf
                       concert:
                         name: concert1
-                        startDate: '2020-08-15'
-                        startTime: '08:00:00'
-                        endTime: '10:00:00'
+                        startTime: '2020-08-15 08:00'
+                        enterTime: '2020-08-15 10:00'
+                        place: place
+                        spreadsheetId: fdjsklfjdksfld
                         spreadsheetLink: 'https://spreadsheet.link'
                         topImageLink: null
                         bottomImageLink: null
@@ -704,9 +722,10 @@ paths:
                       id: 43dsfafdasf
                       concert:
                         name: concert1
-                        startDate: '2020-08-15'
-                        startTime: '08:00:00'
-                        endTime: '10:00:00'
+                        startTime: '2020-08-15 08:00'
+                        enterTime: '2020-08-15 10:00'
+                        place: place
+                        spreadsheetId: fjdkslfjdksf
                         spreadsheetLink: 'https://spreadsheet.link'
                         topImageLink: null
                         bottomImageLink: null
@@ -745,15 +764,14 @@ paths:
               properties:
                 qrData:
                   type: string
-                  description: "\nQR 코드 데이터 (암호화 된 것)\n\n아래 값을 AES256으로 암호화함\n사용자 ID + 공백 + 티켓 ID \n\nsecret key는 kik2fkas9ls1t7vrv72mb로 사용함"
+                  description: ''
               required:
                 - qrData
             examples:
               example-1:
                 value:
-                  qrCode: WUp1rRFmAlj1lzzNqZX1Xy3oAPHlssc9NzSiU/ZGMRfbpIZrMa9IzyL5T0A3QRdeYv9OoOKNIQ==
-        description: |
-          QR 코드에 있는 정보들을 POST 바디로 보냄
+                  qrData: WUp1rRFmAlj1lzzNqZX1Xy3oAPHlssc9NzSiU/ZGMRfbpIZrMa9IzyL5T0A3QRdeYv9OoOKNIQ==
+        description: "QR 코드에 있는 정보들을 POST 바디로 보냄\n\n\nQR 코드 데이터 (암호화 된 것)는 아래 값을 AES256(aes-256-ctr)으로 암호화함\n\n사용자 ID + 공백 + 티켓 ID \n\nsecret key는 kik2fkas9ls1t7vrv72mb로 사용함"
       parameters: []
       security:
         - Authorization: []
@@ -766,7 +784,15 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {}
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example-1:
+                  value:
+                    message: send success
         '429':
           description: |-
             Too Many Requests
@@ -796,6 +822,10 @@ paths:
                   type: string
                   format: email
                   description: 인증코드 보낼 이메일
+            examples:
+              example-1:
+                value:
+                  email: skfk0135@gmail.com
       tags:
         - auth
     parameters: []
@@ -830,9 +860,10 @@ paths:
                   value:
                     concerts:
                       - name: concert1
-                        startTime: '08:00:00'
-                        endTime: '10:00:00'
-                        startDate: '2020-09-02'
+                        startTime: '2020-09-02 08:00'
+                        enterTime: '2020-09-02 10:00'
+                        place: place
+                        spreadsheetId: fdsfsdfdsfsd
                         spreadsheetLink: 'https://spreadsheet.link'
                         topImageLink: null
                         bottomImageLink: null
@@ -1031,6 +1062,7 @@ components:
       type: object
       x-tags:
         - z-form
+      description: ''
       properties:
         name:
           type: string
@@ -1039,19 +1071,18 @@ components:
           type: string
           description: 공연 시작시간
           format: date-time
-        endTime:
+        enterTime:
           type: string
-          format: time
-          description: 공연 끝나는 시간
-        startDate:
+          format: date-time
+          description: 입장 시간
+        place:
           type: string
-          format: date
-          description: 공연 시작 날짜
+          description: 장소
       required:
         - name
         - startTime
-        - endTime
-        - startDate
+        - enterTime
+        - place
     ConcertInfo:
       title: ConcertInfo
       type: object
@@ -1065,18 +1096,17 @@ components:
         name:
           type: string
           description: 공연 이름
+        place:
+          type: string
+          description: 장소
+        enterTime:
+          type: string
+          description: 입장 시간
+          format: date-time
         startTime:
           type: string
           description: 공연 시작시간
-          format: time
-        endTime:
-          type: string
-          format: time
-          description: 공연 끝나는 시간
-        startDate:
-          type: string
-          format: date
-          description: 공연 시작일
+          format: date-time
         spreadsheetId:
           type: string
           description: 스프레드시트 id
@@ -1097,14 +1127,14 @@ components:
       required:
         - id
         - name
+        - place
+        - enterTime
         - startTime
-        - endTime
-        - startDate
         - spreadsheetId
+        - spreadsheetLink
         - topImageLink
         - bottomImageLink
         - host
-        - spreadsheetLink
     TicketInfo:
       title: TicketInfo
       type: object
