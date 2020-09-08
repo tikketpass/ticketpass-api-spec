@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
   title: ticketpass-api
-  version: '1.0'
+  version: 1.0.0
   description: ''
 servers:
-  - url: 'http://localhost:8000'
+  - url: 'http://ticketpass.puroong.me'
 paths:
   /v1/auth/sign-up:
     post:
@@ -219,20 +219,18 @@ paths:
                   endTime: '10:00:00'
                   startDate: '2020-09-02'
         description: ''
-      parameters:
-        - schema:
-            type: string
-            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e...
-          in: header
-          name: Authorization
-          required: true
-          description: access token
+      parameters: []
       tags:
         - concert
       description: |-
         새로운 공연 등록 api
 
         새로운 공연 등록할 때 사용함
+
+        스프레드시트 url 형식은 아래와 같음
+        https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit
+      security:
+        - Authorization: []
     parameters: []
   '/v1/concerts/{concertId}':
     put:
@@ -342,13 +340,9 @@ paths:
                 - startDate
             examples: {}
         description: multiplart/form-data
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          description: Bearer adsfjlasdjf...
-          required: true
+      parameters: []
+      security:
+        - Authorization: []
     parameters:
       - schema:
           type: string
@@ -387,13 +381,9 @@ paths:
                         email: skfk0135@gmail.com
       tags:
         - concert
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          required: true
-          description: Bearer dsfjlaksdfjk...
+      parameters: []
+      security:
+        - Authorization: []
   '/v1/sheet/{spreadsheetId}/sync':
     post:
       summary: 공연 티켓 동기화
@@ -463,14 +453,9 @@ paths:
         주최자가 스프레드시트에 입력한 티켓 정보 디비로 동기화하는 api
 
         주최자가 스프레드시트에 참석자 명단을 작성한 뒤 입력완료를 누를 때 사용함
-      parameters:
-        - schema:
-            type: string
-            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e...
-          in: header
-          name: Authorization
-          required: true
-          description: access token
+      parameters: []
+      security:
+        - Authorization: []
     parameters:
       - schema:
           type: string
@@ -681,13 +666,6 @@ paths:
       description: "nextTicket, expiredTickets와 unexpiredTickets를 응답으로 줌\n\n0.query parameter\n\n  * expiredSize\n    expiredTickets 개수\n  * unexpiredSize\n    unexpiredTicktes 개수\n    \n1.unexpiredTickets\n\n  앞으로 공연 예정인 공연 티켓들\n\n  달 기준으로 오름차순으로 정렬하고 \n  제일 첫번째 티켓이 다음 공연 티켓\n\n  ex.\n  8월\n  9월\n  10월\n  ...\n  \n2.expiredTickets\n\n  이미 공연한 공연 티켓들\n\n  달 기준으로 내림차순으로 정렬함\n  \n  ex.\n  7월\n  6월\n  5월\n  ...\n  \n3. nextTicket\n   \n  가장 빨리 열릴 공연 티켓"
       parameters:
         - schema:
-            type: string
-            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e...
-          in: header
-          name: Authorization
-          required: true
-          description: access token
-        - schema:
             type: integer
           in: query
           name: expiredSize
@@ -697,6 +675,8 @@ paths:
           in: query
           name: unexpiredSize
           description: 이미 공연한 공연티켓 개수
+      security:
+        - Authorization: []
   '/v1/users/{userId}/use-ticket':
     parameters:
       - schema:
@@ -774,13 +754,9 @@ paths:
                   qrCode: WUp1rRFmAlj1lzzNqZX1Xy3oAPHlssc9NzSiU/ZGMRfbpIZrMa9IzyL5T0A3QRdeYv9OoOKNIQ==
         description: |
           QR 코드에 있는 정보들을 POST 바디로 보냄
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: Authorization
-          required: true
-          description: Bearer fdasfjsaldf...
+      parameters: []
+      security:
+        - Authorization: []
   /v1/auth/send-email-code:
     post:
       summary: 메일 인증코드 발송
@@ -897,13 +873,6 @@ paths:
       description: ''
       parameters:
         - schema:
-            type: string
-            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e...
-          in: header
-          name: Authorization
-          required: true
-          description: access token
-        - schema:
             type: integer
           in: query
           name: limit
@@ -913,6 +882,8 @@ paths:
           in: query
           name: offset
           description: offset
+      security:
+        - Authorization: []
 components:
   schemas:
     User:
@@ -1086,6 +1057,7 @@ components:
       type: object
       x-tags:
         - z-dto
+      description: ''
       properties:
         id:
           type: string
@@ -1105,9 +1077,12 @@ components:
           type: string
           format: date
           description: 공연 시작일
+        spreadsheetId:
+          type: string
+          description: 스프레드시트 id
         spreadsheetLink:
           type: string
-          description: 스프레드시트 링크
+          description: 스프레드시트 url
           format: uri
         topImageLink:
           type: string
@@ -1125,10 +1100,11 @@ components:
         - startTime
         - endTime
         - startDate
-        - spreadsheetLink
+        - spreadsheetId
         - topImageLink
         - bottomImageLink
         - host
+        - spreadsheetLink
     TicketInfo:
       title: TicketInfo
       type: object
