@@ -915,6 +915,93 @@ paths:
           description: offset
       security:
         - Authorization: []
+  '/v1/users/{userId}/tickets/{ticketId}':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+        description: 유저 PK
+      - schema:
+          type: string
+        name: ticketId
+        in: path
+        required: true
+        description: 티켓 PK
+    get:
+      summary: Your GET endpoint
+      tags:
+        - ticket
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticket:
+                    $ref: '#/components/schemas/TicketInfo'
+                required:
+                  - ticket
+              examples:
+                example-1:
+                  value:
+                    ticket:
+                      id: fdsfsdffdsdfsd
+                      concert:
+                        name: concert1
+                        startTime: '2020-08-15 10:00'
+                        enterTime: '2020-08-15 09:00'
+                        place: place
+                        spreadsheetId: fdjsklfjdksfld
+                        spreadsheetLink: 'https://spreadsheet.link'
+                        topImageLink: null
+                        bottomImageLink: null
+                        host:
+                          id: 5f4fe3dba2d2227ae30477ad
+                          email: skfk0135@gmail.com
+                      userName: 오범수
+                      userPhoneNumber: 010-3479-1031
+                      seatClass: R
+                      isUsed: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+      operationId: get-v1-users-userId-tickets-ticketId
+      security:
+        - Authorization: []
 components:
   schemas:
     User:
